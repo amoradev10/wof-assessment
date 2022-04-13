@@ -225,6 +225,8 @@ while round1 == True:
                     round2 = True
                 else:
                     print("sorry incorrect...")
+                    player1_turn = False
+                    player2_turn = True
                     
             if guess_word == "No":
                 print("Next player! ")
@@ -364,6 +366,8 @@ while round1 == True:
                     round2 = True  
                 else:
                     print("sorry incorrect...")
+                    player2_turn = False
+                    player3_turn = True
             if guess_word == "No":
                 print("Next player! ")
                 player2_turn = False
@@ -503,6 +507,8 @@ while round1 == True:
                     round2 = True
                 else:
                     print("sorry incorrect...")
+                    player3_turn = False
+                    player1_turn = True
 
             if guess_word == "No":
                 print("Next player! ")
@@ -651,6 +657,8 @@ while round2 == True:
                     round3 = True
                 else:
                     print("sorry incorrect...")
+                    player1_turn = False
+                    player2_turn = True
                     
             if guess_word == "No":
                 print("Next player! ")
@@ -790,6 +798,8 @@ while round2 == True:
                     round3 = True 
                 else:
                     print("sorry incorrect...")
+                    player2_turn = False
+                    player3_turn = True
 
             if guess_word == "No":
                 print("Next player! ")
@@ -930,6 +940,8 @@ while round2 == True:
                     round3 = True
                 else:
                     print("sorry incorrect...")
+                    player3_turn = False
+                    player1_turn = True
 
             if guess_word == "No":
                 print("Next player! ")
@@ -947,6 +959,7 @@ while round3 == True:
     hidden_list = hidden_list_reset(puzzle)
     print(puzzle)
     print(hidden_list)
+    print(rank1_player)
         
 
     # Grabs the winner of previous rounds
