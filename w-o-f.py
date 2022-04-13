@@ -1,6 +1,8 @@
 import random
 import time
 
+#HAVE TO TYPE IN CAPS
+
 # Time 
 # def countdown(time_sec):
 #     while time_sec:
@@ -27,7 +29,7 @@ stored_consonant =[]
 stored_vowels = []
 
 # words
-file = (r"words.txt") 
+file = (r"words2.txt") 
 
 #declaring a word to guess
 def puzzle_file():
@@ -36,11 +38,17 @@ def puzzle_file():
     word_file.close()
     return word_choice
 
-hidden_list = []
+# hidden_list = []
 
     # adds _'s to each letter of the word
-for char in puzzle_file():
-    hidden_list.append("_")
+
+def hidden_list_reset(puzzle):
+    hidden_list_diff = []
+    for char in puzzle:
+        hidden_list_diff.append("_")
+    print(hidden_list_diff)
+    return hidden_list_diff
+        
 
 
 # the players ability to play
@@ -49,10 +57,17 @@ player2_turn = False
 player3_turn = False
 
 # amount of money per player
-player1_bank = 0
-player2_bank = 0
-player3_bank = 0
-
+player1_bank_r1 = 0
+player2_bank_r1 = 0
+player3_bank_r1 = 0
+#round 2
+player1_bank_r2 = 0
+player2_bank_r2 = 0
+player3_bank_r2 = 0
+#final round
+player1_bank = player1_bank_r1 + player1_bank_r2
+player2_bank = player2_bank_r1 + player2_bank_r2
+player3_bank = player3_bank_r1 + player3_bank_r2
 # Final round variables
 
 final_attempt = 5
@@ -69,10 +84,14 @@ round1 = True
 round2 = False
 round3 = False
 
+final_attempt_status = True
 
 
 while round1 == True:
     puzzle = puzzle_file()
+    hidden_list = hidden_list_reset(puzzle)
+    print(puzzle)
+    print(hidden_list)
     print("Round One!")
 
     while player1_turn == True:
@@ -89,8 +108,8 @@ while round1 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player1_bank = player1_bank + result_of_wheel
-                print("Balance: $", player1_bank)
+                player1_bank_r1 = player1_bank_r1 + result_of_wheel
+                print("Balance: $", player1_bank_r1)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -112,21 +131,21 @@ while round1 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player1_bank = player1_bank - result_of_wheel
+                        player1_bank_r1 = player1_bank_r1 - result_of_wheel
                         player1_turn = False
                         player2_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player1_bank = player1_bank - result_of_wheel
+                    player1_bank_r1 = player1_bank_r1 - result_of_wheel
                 print(hidden_list)
 
-                if player1_bank >= 250:
+                if player1_bank_r1 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
-                        player1_bank = player1_bank -250
+                        player1_bank_r1 = player1_bank_r1 -250
                         vowel_guess = input("Guess a VOWEL: ")
                         if vowel_guess in vowels:
                             print("Vowel:",vowel_guess)
@@ -144,6 +163,11 @@ while round1 == True:
 
                                         player1_turn = False
                                         player2_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player1_turn = False
+                                player2_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -163,9 +187,9 @@ while round1 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player1_turn = False
-                player1_bank = 0
+                player1_bank_r1 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player1_bank)
+                print("Balance: $", player1_bank_r1)
                 print("Next player! ")
                 player2_turn = True
 
@@ -173,7 +197,6 @@ while round1 == True:
             elif result_of_wheel == "LOSE A TURN":
                 player1_turn = False
                 print("You lost your turn, next player!")
-                player1_turn = False
                 player2_turn = True
 
 
@@ -189,14 +212,19 @@ while round1 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player2_bank_r1 = 0
+                    player3_bank_r1 = 0 
+
+                    print("Player 1 Bank: $", player1_bank_r1)
+                    print("Player 2 Bank: $", player2_bank_r1)
+                    print("Player 3 Bank: $", player3_bank_r1)
                     player1_turn = False
                     player2_turn = False
                     player3_turn = False
                     round1 = False
                     round2 = True
+                else:
+                    print("sorry incorrect...")
                     
             if guess_word == "No":
                 print("Next player! ")
@@ -219,8 +247,8 @@ while round1 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player2_bank = player2_bank + result_of_wheel
-                print("Balance: $", player2_bank)
+                player2_bank_r1 = player2_bank_r1 + result_of_wheel
+                print("Balance: $", player2_bank_r1)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -242,17 +270,17 @@ while round1 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player2_bank = player2_bank - result_of_wheel
+                        player2_bank_r1 = player2_bank_r1 - result_of_wheel
                         player2_turn = False
                         player3_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player2_bank = player2_bank - result_of_wheel
+                    player2_bank_r1 = player2_bank_r1 - result_of_wheel
                 print(hidden_list)
 
-                if player1_bank >= 250:
+                if player2_bank_r1 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
@@ -274,6 +302,11 @@ while round1 == True:
 
                                         player2_turn = False
                                         player3_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player2_turn = False
+                                player3_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -293,15 +326,14 @@ while round1 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player2_turn = False
-                player2_bank = 0
+                player2_bank_r1 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player2_bank)
+                print("Balance: $", player2_bank_r1)
                 print("Next player! ")
                 player3_turn = True
 
             # user loses their turn
             elif result_of_wheel == "LOSE A TURN":
-                player1_turn = False
                 print("You lost your turn, next player!")
                 player2_turn = False
                 player3_turn = True
@@ -319,12 +351,19 @@ while round1 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player1_bank_r1 = 0
+                    player3_bank_r1 = 0 
+
+                    print("Player 1 Bank: $", player1_bank_r1)
+                    print("Player 2 Bank: $", player2_bank_r1)
+                    print("Player 3 Bank: $", player3_bank_r1)
+                    player1_turn = False
+                    player2_turn = False
+                    player3_turn = False
                     round1 = False
                     round2 = True  
-
+                else:
+                    print("sorry incorrect...")
             if guess_word == "No":
                 print("Next player! ")
                 player2_turn = False
@@ -346,8 +385,8 @@ while round1 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player3_bank = player3_bank + result_of_wheel
-                print("Balance: $", player3_bank)
+                player3_bank_r1 = player3_bank_r1 + result_of_wheel
+                print("Balance: $", player3_bank_r1)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -369,21 +408,21 @@ while round1 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player3_bank = player3_bank - result_of_wheel
+                        player3_bank_r1 = player3_bank_r1 - result_of_wheel
                         player3_turn = False
                         player1_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player3_bank = player3_bank - result_of_wheel
+                    player3_bank_r1 = player3_bank_r1 - result_of_wheel
                 print(hidden_list)
 
-                if player3_bank >= 250:
+                if player3_bank_r1 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
-                        player3_bank = player3_bank -250
+                        player3_bank_r1 = player3_bank_r1 -250
                         vowel_guess = input("Guess a VOWEL: ")
                         if vowel_guess in vowels:
                             print("Vowel:",vowel_guess)
@@ -401,6 +440,11 @@ while round1 == True:
 
                                         player3_turn = False
                                         player1_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player3_turn = False
+                                player1_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -420,15 +464,14 @@ while round1 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player3_turn = False
-                player3_bank = 0
+                player3_bank_r1 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player3_bank)
+                print("Balance: $", player3_bank_r1)
                 print("Next player! ")
                 player1_turn = True
 
             # user loses their turn
             elif result_of_wheel == "LOSE A TURN":
-                player3_turn = False
                 print("You lost your turn, next player!")
                 player3_turn = False
                 player1_turn = True
@@ -446,11 +489,20 @@ while round1 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player1_bank_r1 = 0
+                    player2_bank_r1 = 0 
+
+                    print("Player 1 Bank: $", player1_bank_r1)
+                    print("Player 2 Bank: $", player2_bank_r1)
+                    print("Player 3 Bank: $", player3_bank_r1)
+
+                    player1_turn = False
+                    player2_turn = False
+                    player3_turn = False
                     round1 = False
                     round2 = True
+                else:
+                    print("sorry incorrect...")
 
             if guess_word == "No":
                 print("Next player! ")
@@ -462,8 +514,12 @@ while round1 == True:
 
 while round2 == True:
     puzzle = puzzle_file()
-    print("Round Two!")
+    hidden_list = hidden_list_reset(puzzle)
+    print(puzzle)
+    print(hidden_list)
 
+    print("Round Two!")
+    player1_turn = True
     while player1_turn == True:
         print("Player One, ")
 
@@ -478,8 +534,8 @@ while round2 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player1_bank = player1_bank + result_of_wheel
-                print("Balance: $", player1_bank)
+                player1_bank_r2 = player1_bank_r2 + result_of_wheel
+                print("Round Balance: $", player1_bank_r2)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -501,21 +557,21 @@ while round2 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player1_bank = player1_bank - result_of_wheel
+                        player1_bank_r2 = player1_bank_r2 - result_of_wheel
                         player1_turn = False
                         player2_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player1_bank = player1_bank - result_of_wheel
+                    player1_bank_r2 = player1_bank_r2 - result_of_wheel
                 print(hidden_list)
 
-                if player1_bank >= 250:
+                if player1_bank_r2 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
-                        player1_bank = player1_bank -250
+                        player1_bank_r2 = player1_bank_r2 -250
                         vowel_guess = input("Guess a VOWEL: ")
                         if vowel_guess in vowels:
                             print("Vowel:",vowel_guess)
@@ -533,6 +589,11 @@ while round2 == True:
 
                                         player1_turn = False
                                         player2_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player1_turn = False
+                                player2_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -552,15 +613,14 @@ while round2 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player1_turn = False
-                player1_bank = 0
+                player1_bank_r2 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player1_bank)
+                print("Balance: $", player1_bank_r2)
                 print("Next player! ")
                 player2_turn = True
 
             # user loses their turn
             elif result_of_wheel == "LOSE A TURN":
-                player1_turn = False
                 print("You lost your turn, next player!")
                 player1_turn = False
                 player2_turn = True
@@ -578,11 +638,19 @@ while round2 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player2_bank_r2 = 0
+                    player3_bank_r2 = 0 
+
+                    print("Player 1 Bank: $", player1_bank_r2)
+                    print("Player 2 Bank: $", player2_bank_r2)
+                    print("Player 3 Bank: $", player3_bank_r2)
+                    player1_turn = False
+                    player2_turn = False
+                    player3_turn = False
                     round2 = False
                     round3 = True
+                else:
+                    print("sorry incorrect...")
                     
             if guess_word == "No":
                 print("Next player! ")
@@ -605,8 +673,8 @@ while round2 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player2_bank = player2_bank + result_of_wheel
-                print("Balance: $", player2_bank)
+                player2_bank_r2 = player2_bank_r2 + result_of_wheel
+                print("Balance: $", player2_bank_r2)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -628,21 +696,21 @@ while round2 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player2_bank = player2_bank - result_of_wheel
+                        player2_bank_r2 = player2_bank_r2 - result_of_wheel
                         player2_turn = False
                         player3_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player2_bank = player2_bank - result_of_wheel
+                    player2_bank_r2 = player2_bank_r2 - result_of_wheel
                 print(hidden_list)
 
-                if player1_bank >= 250:
+                if player2_bank_r2 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
-                        player2_bank = player2_bank -250
+                        player2_bank_r2 = player2_bank_r2 -250
                         vowel_guess = input("Guess a VOWEL: ")
                         if vowel_guess in vowels:
                             print("Vowel:",vowel_guess)
@@ -660,6 +728,11 @@ while round2 == True:
 
                                         player2_turn = False
                                         player3_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player2_turn = False
+                                player3_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -679,15 +752,14 @@ while round2 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player2_turn = False
-                player2_bank = 0
+                player2_bank_r2 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player2_bank)
+                print("Balance: $", player2_bank_r2)
                 print("Next player! ")
                 player3_turn = True
 
             # user loses their turn
             elif result_of_wheel == "LOSE A TURN":
-                player1_turn = False
                 print("You lost your turn, next player!")
                 player2_turn = False
                 player3_turn = True
@@ -705,11 +777,19 @@ while round2 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player1_bank_r2 = 0
+                    player3_bank_r2 = 0 
+
+                    print("Player 1 Bank: $", player1_bank_r2)
+                    print("Player 2 Bank: $", player2_bank_r2)
+                    print("Player 3 Bank: $", player3_bank_r2)
+                    player1_turn = False
+                    player2_turn = False
+                    player3_turn = False
                     round2 = False
-                    round3 = True  
+                    round3 = True 
+                else:
+                    print("sorry incorrect...")
 
             if guess_word == "No":
                 print("Next player! ")
@@ -732,8 +812,8 @@ while round2 == True:
 
             if isinstance(result_of_wheel, int):
 
-                player3_bank = player3_bank + result_of_wheel
-                print("Balance: $", player3_bank)
+                player3_bank_r2 = player3_bank_r2 + result_of_wheel
+                print("Balance: $", player3_bank_r2)
                 print("The word to guess is: ", hidden_list)
 
                 # user gets to guess a consonant
@@ -755,21 +835,21 @@ while round2 == True:
                             
                     else:
                         print("Sorry,",consonant_guess, "is not in the word.")
-                        player3_bank = player3_bank - result_of_wheel
+                        player3_bank_r2 = player3_bank_r2 - result_of_wheel
                         player3_turn = False
                         player1_turn = True
                     
 
                 else:
                     print("Sorry,",consonant_guess, "is not a consonant.")                    
-                    player3_bank = player3_bank - result_of_wheel
+                    player3_bank_r2 = player3_bank_r2 - result_of_wheel
                 print(hidden_list)
 
-                if player3_bank >= 250:
+                if player3_bank_r2 >= 250:
                     buy_vowel = input("Would you like to buy a vowel?(Yes/No):")
 
                     if buy_vowel == "Yes":
-                        player3_bank = player3_bank -250
+                        player3_bank_r2 = player3_bank_r2 -250
                         vowel_guess = input("Guess a VOWEL: ")
                         if vowel_guess in vowels:
                             print("Vowel:",vowel_guess)
@@ -787,6 +867,11 @@ while round2 == True:
 
                                         player3_turn = False
                                         player1_turn = True
+                            else:
+                                print("Sorry,",vowel_guess, "is not in the word.")
+
+                                player3_turn = False
+                                player2_turn = True
                         else:
                             print("Sorry,",vowel_guess, "is not a vowel.")
 
@@ -806,9 +891,9 @@ while round2 == True:
             # user result is bankrupt = total goes to 0
             elif result_of_wheel == "BANKRUPT":
                 player3_turn = False
-                player3_bank = 0
+                player3_bank_r2 = 0
                 print("I'm sorry... you lost everything in your bank!!")
-                print("Balance: $", player3_bank)
+                print("Balance: $", player3_bank_r2)
                 print("Next player! ")
                 player1_turn = True
 
@@ -832,11 +917,19 @@ while round2 == True:
                     print("You guessed the word!!")
                     print("Next Round!")
 
-                    print("Player 1 Bank: $", player1_bank)
-                    print("Player 2 Bank: $", player2_bank)
-                    print("Player 3 Bank: $", player3_bank)
+                    player2_bank_r2 = 0
+                    player3_bank_r2 = 0
+
+                    print("Player 1 Bank: $", player1_bank_r2)
+                    print("Player 2 Bank: $", player2_bank_r2)
+                    print("Player 3 Bank: $", player3_bank_r2)
+                    player1_turn = False
+                    player2_turn = False
+                    player3_turn = False
                     round2 = False
                     round3 = True
+                else:
+                    print("sorry incorrect...")
 
             if guess_word == "No":
                 print("Next player! ")
@@ -851,15 +944,21 @@ while round3 == True:
 
     # new word to guess
     puzzle = puzzle_file()
+    hidden_list = hidden_list_reset(puzzle)
+    print(puzzle)
+    print(hidden_list)
         
 
     # Grabs the winner of previous rounds
     if rank1_player == player1_bank:
         print("The player with the HIGHEST score is....player 1!" ,"$",player1_bank)
+
     elif rank1_player == player2_bank:
         print("The player with the HIGHEST score is....player 2!" ,"$",player2_bank)
+
     elif rank1_player == player3_bank:
         print("The player with the HIGHEST score is....player 3!" ,"$",player3_bank)
+
 
 
     # Shows the word to be guessed for the final
@@ -950,25 +1049,25 @@ while round3 == True:
     if consonant_final1 in puzzle:
         print("Consonant 1 is in the word!")
     elif consonant_final1 not in puzzle:
-        print("Consonant 1 is NOT the word!")
+        print("Consonant 1 is NOT in the word!")
 
     # SECOND CONSONANT
     if consonant_final2 in puzzle:
         print("Consonant 2 is in the word!")  
     elif consonant_final2 not in puzzle:
-        print("Consonant 2 is NOT the word!") 
+        print("Consonant 2 is NOT in the word!") 
 
     # THIRD CONSONANT
     if consonant_final3 in puzzle:
         print("Consonant 3 is in the word!")
     elif consonant_final3 not in puzzle:
-        print("Consonant 3 is NOT the word!") 
+        print("Consonant 3 is NOT in the word!") 
 
     # VOWEL GUESS
     if vowel_final in puzzle:
         print("This vowel is in the word!")    
     elif vowel_final not in puzzle:
-        print("This vowel is NOT the word!") 
+        print("This vowel is NOT in the word!") 
 
     for position in range(len(puzzle)):
         if puzzle[position] == consonant_final1:
@@ -983,7 +1082,7 @@ while round3 == True:
 
 
 # couldn't get timer to work properly, using attempts instead
-    while final_attempt > 0:
+    while final_attempt_status == True:
 
         if final_attempt > 0:
             print("You have", final_attempt,"attempt(s) to guess word!!")
@@ -998,9 +1097,12 @@ while round3 == True:
                     print("YOU WON!!")
                     prize_winner = rank1_player + prize_third_round
                     print("CONGRADULATIONS!! YOU WON $", prize_winner, "!!")
+
+                    final_attempt_status = False
                     round3 = False
                     round2 = False
                     round1 = False
+                    
 
                 elif final_guesses != puzzle:
                     print("Nope, try again!!")
