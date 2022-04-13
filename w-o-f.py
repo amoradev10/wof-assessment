@@ -36,7 +36,7 @@ def puzzle_file():
     word_file = open(file)
     word_choice = random.choice(word_file.read().split())
     word_file.close()
-    return word_choice
+    return word_choice.upper()
 
 # hidden_list = []
 
